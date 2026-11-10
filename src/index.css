@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Rozha One', 'Yatra One', serif;
+  --font-yatra: 'Yatra One', cursive;
+  --font-body: 'Poppins', sans-serif;
+
+  --color-olive: #7A7F45;
+  --color-olive-dark: #4F5A2A;
+  --color-olive-deep: #262D15;
+  --color-cream: #FFF8E7;
+  --color-cream-light: #FFFCF4;
+  --color-cream-muted: #F3EBD4;
+  --color-forest: #1F3A1F;
+  --color-forest-dark: #112211;
+  --color-banana: #3E7B3A;
+  --color-banana-light: #4F994A;
+  --color-gold: #C8963E;
+  --color-gold-light: #DEAC53;
+  --color-amber-glow: #E8A33D;
+  --color-kumkum: #B3261E;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    /* FIX: removed "scroll-behavior: smooth". It fights Lenis and GSAP and causes lag. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* stops the mobile browser from re-scaling text while scrolling */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Lenis recommended rules */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: clip; }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    height: 0px;
+  }
+
+  body {
+    background-color: #FFF8E7;
+    color: #1F3A1F;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+/* ================= LIQUID GLASS SYSTEM (lighter on the GPU) =================
+   Same look. Blur radius reduced and "saturate()" removed because both are very
+   expensive while a video / animation is moving behind the glass. */
+.liquid-glass {
+  background: rgba(255, 248, 231, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 1px 0 rgba(200, 150, 62, 0.15),
+    0 12px 36px -4px rgba(31, 58, 31, 0.08),
+    0 4px 12px -2px rgba(31, 58, 31, 0.04);
+}
+
+.liquid-glass-subtle {
+  background: rgba(255, 248, 231, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.6),
+    0 8px 24px -2px rgba(31, 58, 31, 0.06);
+}
+
+.liquid-glass-dark {
+  background: rgba(26, 34, 14, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(200, 150, 62, 0.35);
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4),
+    0 16px 40px -6px rgba(0, 0, 0, 0.45);
+}
+
+.liquid-glass-dark-strong {
+  background: rgba(16, 22, 10, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(200, 150, 62, 0.45);
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 248, 231, 0.25),
+    0 20px 50px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* Phones, touch screens and weak devices: almost no blur, a bit more opaque */
+@media (max-width: 767px), (pointer: coarse) {
+  .liquid-glass        { backdrop-filter: blur(6px);  -webkit-backdrop-filter: blur(6px);  background: rgba(255, 248, 231, 0.72); }
+  .liquid-glass-subtle { backdrop-filter: blur(4px);  -webkit-backdrop-filter: blur(4px);  background: rgba(255, 248, 231, 0.55); }
+  .liquid-glass-dark   { backdrop-filter: blur(6px);  -webkit-backdrop-filter: blur(6px);  background: rgba(26, 34, 14, 0.72); }
+  .liquid-glass-dark-strong { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background: rgba(16, 22, 10, 0.84); }
+}
+html.lite .liquid-glass,
+html.lite .liquid-glass-subtle,
+html.lite .liquid-glass-dark,
+html.lite .liquid-glass-dark-strong {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.lite .liquid-glass        { background: rgba(255, 248, 231, 0.9); }
+html.lite .liquid-glass-subtle { background: rgba(255, 248, 231, 0.8); }
+html.lite .liquid-glass-dark   { background: rgba(26, 34, 14, 0.88); }
+html.lite .liquid-glass-dark-strong { background: rgba(16, 22, 10, 0.92); }
+
+.liquid-glass-card {
+  position: relative;
+  overflow: hidden;
+  /* FIX: was "transition: all" */
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+}
+
+.liquid-glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transition: transform 0.8s ease;
+}
+
+/* the shine sweep only on devices that can hover */
+@media (hover: hover) {
+  .liquid-glass-card:hover::before {
+    transform: translateX(200%);
+  }
+}
+
+/* Hide scrollbar for clean touch carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom smooth text-shadow & glow */
+.text-gold-glow {
+  text-shadow: 0 0 20px rgba(200, 150, 62, 0.45), 0 0 40px rgba(232, 163, 61, 0.2);
+}
+
+.text-dark-scrim {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85), 0 4px 24px rgba(0, 0, 0, 0.65);
+}
+
+/* Diagonal light sweep animation across loader logo */
+@keyframes logoLightSweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.logo-sweep-mask {
+  background: linear-gradient(
+    105deg,
+    rgba(255, 248, 231, 0.75) 20%,
+    rgba(255, 255, 255, 1) 48%,
+    rgba(255, 236, 170, 1) 52%,
+    rgba(255, 248, 231, 0.75) 80%
+  );
+  background-size: 300% 100%;
+  animation: logoLightSweep 2.4s infinite linear;
+}
+
+/* FIX: was "transition: all" */
+.smooth-transition {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Extra safety net for performance ===== */
+/* any leftover Tailwind backdrop-blur-* class gets cheap on phones and weak devices */
+@media (max-width: 767px), (pointer: coarse) {
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: blur(6px) !important;
+    backdrop-filter: blur(6px) !important;
+  }
+}
+html.lite [class*="backdrop-blur"] {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+/* lite mode: no heavy drop-shadow filters on big graphics */
+html.lite .th-leaves svg { filter: none !important; }

@@ -1,0 +1,6 @@
+{
+  "name": "Theertham — Pure Vegetarian South Indian Restaurant",
+  "description": "A scroll-driven culinary journey into South Indian tiffin & banana-leaf meals in Nashik, Maharashtra.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
